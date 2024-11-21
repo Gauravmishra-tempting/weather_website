@@ -1,6 +1,26 @@
 import React from 'react'
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
+
+const weatherforcast = async (lat, lon) => {
+  const api_key = '43cf2c46a80c7f13361c6e0fe7181f0a';
+  const api = 
+  `https://pro.openweathermap.org/data/2.5/forecast/hourly?lat=${lat}&lon=${lon}&appid=${api_key}`;
+
+  try{
+    const response = await fetch(api);
+    if(!response.ok){
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const data = await response.json();
+  }
+  catch(error){
+    console.error('error fetching weather data', error)
+  }
+}
+weatherforcast(37.7749, -122.4194);
+
+
 const weather = () => {
   return (
     <div className="container mt-5 rounded" style={{backgroundColor:"#3A6D8C"}}>
