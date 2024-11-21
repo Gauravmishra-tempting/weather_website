@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
 
-const Weather = () => {
-  const api_key = process.env.REACT_APP_APIKEY;
 
-  const [location, setLocation] = useState({ lat: null, long: null });
+
+const Weather = () => {
+
+  const api_key = process.env.REACT_APP_APIKEY;
+  const [city, setCity] = useState('');
+  const [location, setLocation] = useState({ lat: 28.6654, long: 77.298 });
   const [forecast, setForecast] = useState([]);
 
   // Get user's location
@@ -34,26 +37,34 @@ const Weather = () => {
   const fetchWeatherData = async () => {
     try {
       const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${location.lat}&lon=${location.long}&appid=43cf2c46a80c7f13361c6e0fe7181f0a`
+        `https://api.openweathermap.org/data/2.5/forecast?lat=${location.lat}&lon=${location.long}&appid=${api_key}`
       );
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
 
-      // Extracting a 4-day forecast (example logic, adjust as needed)
-      const fourDayForecast = data.list
-        .slice(0, 4 * 24) // Assuming hourly data, slice for 4 days
-        .map((item) => {
-          const date = new Date(item.dt * 1000);
-          return {
-            day: date.toLocaleDateString('en-US', { weekday: 'long' }),
-            temp: Math.round(item.main.temp - 273.15), // Convert Kelvin to Celsius
-            icon: `http://openweathermap.org/img/wn/${item.weather[0].icon}.png`,
-          };
-        });
+     
 
-      setForecast(fourDayForecast);
+      // Extracting a 4-day forecast (example logic, adjust as needed)
+      const dailyForecast = [];
+      let currentDay = null;
+
+      data.list.forEach((item) => {
+        const date = new Date(item.dt * 1000);
+        const dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+
+        // If it's a new day, add to the forecast array
+        if (currentDay !== dayName) {
+          dailyForecast.push({
+            day: dayName,
+            temp: Math.round(item.main.temp - 273.15), // Convert from Kelvin to Celsius
+            icon: `http://openweathermap.org/img/wn/${item.weather[0].icon}.png`,
+          });
+          currentDay = dayName; // Update current day
+        }
+      });
+      setForecast(dailyForecast.slice(0, 4));
     } catch (error) {
       console.error('Error fetching weather data:', error);
     }
@@ -69,8 +80,8 @@ const Weather = () => {
             <div className="border-bottom"></div>
             {forecast.map((item, index) => (
               <div key={index} className="text-white mt-3">
-                <p>
-                  {item.day}: {item.temp}°C
+                <p style={{ color: 'white' }}>
+                  {item.day} {item.temp}°C
                   <img
                     src={item.icon}
                     alt="Weather Icon"
