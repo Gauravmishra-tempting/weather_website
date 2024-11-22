@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
-
 
 
 const Weather = () => {
-
   const api_key = process.env.REACT_APP_APIKEY;
   const [city, setCity] = useState('');
-  const [location, setLocation] = useState({ lat: 28.6654, long: 77.298 });
+  const [location, setLocation] = useState({ lat: 28.6643, long: 77.2430 });
   const [forecast, setForecast] = useState([]);
+  const [humidity, setHumidity] = useState(null);
+  const [wind, setWind] = useState(null);
 
   // Get user's location
   useEffect(() => {
@@ -44,6 +43,15 @@ const Weather = () => {
       }
       const data = await response.json();
 
+
+      // Extract the city name
+      setCity(data.city.name);
+
+      // Set the humidity and wind (using the first forecast item for simplicity)
+      const firstForecast = data.list[0];
+      setHumidity(firstForecast.main.humidity); // Humidity
+      setWind(firstForecast.wind.speed); // Wind speed
+
      
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
@@ -59,7 +67,7 @@ const Weather = () => {
           dailyForecast.push({
             day: dayName,
             temp: Math.round(item.main.temp - 273.15), // Convert from Kelvin to Celsius
-            icon: `http://openweathermap.org/img/wn/${item.weather[0].icon}.png`,
+            icon: `http://openweathermap.org/img/wn/${item.weather[0].icon}.png` ,
           });
           currentDay = dayName; // Update current day
         }
@@ -73,27 +81,33 @@ const Weather = () => {
   return (
     <div className="container mt-5 rounded" style={{ backgroundColor: '#3A6D8C' }}>
       <h1 className="text-center p-2 text-white">Weather Website</h1>
-      <div className="d-flex justify-content-center">
-        <div className="row">
-          <div className="col-12 rounded mt-5 bg-dark bg-gradient m-5">
+        <div className="row d-flex justify-content-center">
+          <div className="col-sm-6 col-md-6 rounded mt-5 bg-dark bg-gradient">
             <h4 className="text-white mt-2">4-Days Forecast</h4>
             <div className="border-bottom"></div>
             {forecast.map((item, index) => (
               <div key={index} className="text-white mt-3">
                 <p style={{ color: 'white' }}>
-                  {item.day} {item.temp}°C
-                  <img
-                    src={item.icon}
-                    alt="Weather Icon"
-                    style={{ width: '30px', marginLeft: '10px' }}
-                  />
+                  {item.day} 
+                <img
+                  src={item.icon}
+                  alt="Weather Icon"
+                  style={{ width: '30px', marginLeft: '30px', marginRight: '30px'}}
+                />
+                {item.temp}°C
                 </p>
               </div>
             ))}
           </div>
+          <div className="col-sm-6 col-md-6 rounded bg-dark bg-gradient m-3">
+            <h4 className="text-white mt-2">4-Days Forecast</h4>
+            <div className="border-bottom"></div>
+            <p className="text-white mt-2">City  {city}</p>
+            <p className="text-white mt-2">Humidity  {humidity}%</p>
+            <p className="text-white mt-2">Wind {wind} m/s</p>
+          </div>
         </div>
       </div>
-    </div>
   );
 };
 
