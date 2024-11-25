@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import clear from '../../images/sunny.jpg'
-import rainy from '../../images/rainy.jpg'
-import winters from '../../images/winter.jpg';
+import Rain from '../../images/Rain.jpg'
+import snow from '../../images/winter.jpg';
 
 const Weather = () => {
   const api_key = process.env.REACT_APP_APIKEY;
@@ -59,14 +59,13 @@ const Weather = () => {
       const condition = firstForecast.weather[0].main;
       if(condition==="clear"){
         setBackgroundConditon(clear);
-      }else if (condition==="rain"){
-        setBackgroundConditon(rainy);
+      }else if (condition==="Rain" || condition==="Drizzle"){
+        setBackgroundConditon(Rain);
       }
-      else if (condition==="winter"){
-        setBackgroundConditon(winters);
+      else if (condition==="Snow"){
+        setBackgroundConditon(snow);
       }
       
-     
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
       const dailyForecast = [];
@@ -93,7 +92,7 @@ const Weather = () => {
   };
 
   return (
-    <div className='container mt-5 rounded'
+    <div className='container mt-2 mb-2 rounded'
       style = {{
         backgroundColor: '#3A6D8C',
         backgroundImage: `url(${backgroundConditon})`,
