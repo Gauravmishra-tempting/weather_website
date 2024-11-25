@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
-
+import clear from '../../images/sunny.jpg'
+import rainy from '../../images/rainy.jpg'
+import winters from '../../images/winter.jpg';
 
 const Weather = () => {
   const api_key = process.env.REACT_APP_APIKEY;
   const [city, setCity] = useState('');
-  const [location, setLocation] = useState({ lat: 28.6643, long: 77.2430 });
+  const [location, setLocation] = useState({ lat: 28.6643, long: 77.243 });
   const [forecast, setForecast] = useState([]);
   const [humidity, setHumidity] = useState(null);
   const [wind, setWind] = useState(null);
+  const [backgroundConditon, setBackgroundConditon] = useState(clear);
+
+
 
   // Get user's location
   useEffect(() => {
@@ -51,7 +56,16 @@ const Weather = () => {
       const firstForecast = data.list[0];
       setHumidity(firstForecast.main.humidity); // Humidity
       setWind(firstForecast.wind.speed); // Wind speed
-
+      const condition = firstForecast.weather[0].main;
+      if(condition==="clear"){
+        setBackgroundConditon(clear);
+      }else if (condition==="rain"){
+        setBackgroundConditon(rainy);
+      }
+      else if (condition==="winter"){
+        setBackgroundConditon(winters);
+      }
+      
      
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
@@ -79,11 +93,19 @@ const Weather = () => {
   };
 
   return (
-    <div className="container mt-5 rounded" style={{ backgroundColor: '#3A6D8C' }}>
-      <h1 className="text-center p-2 text-white">Weather Website</h1>
-        <div className="row d-flex justify-content-center">
-          <div className="col-sm-6 col-md-6 rounded mt-5 bg-dark bg-gradient">
-            <h4 className="text-white mt-2">4-Days Forecast</h4>
+    <div className='container mt-5 rounded'
+      style = {{
+        backgroundColor: '#3A6D8C',
+        backgroundImage: `url(${backgroundConditon})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        color: 'white',
+      }}
+      >
+      <h1 className="text-center text-white mt-1">Weather Website</h1>
+        <div className="d-flex justify-content-center align-items-center">
+          <div className="col-sm-6 col-md-6 rounded mt-3 bg-dark bg-gradient p-3 mb-3">
+            <h4 className="text-white">4-Days Forecast</h4>
             <div className="border-bottom"></div>
             {forecast.map((item, index) => (
               <div key={index} className="text-white mt-3">
@@ -99,12 +121,14 @@ const Weather = () => {
               </div>
             ))}
           </div>
-          <div className="col-sm-6 col-md-6 rounded bg-dark bg-gradient m-3">
-            <h4 className="text-white mt-2">4-Days Forecast</h4>
+          </div>
+          <div className="d-flex justify-content-center align-items-center">
+          <div className="col-sm-6 col-md-6 rounded bg-dark bg-gradient p-3 mb-3">
+            <h4 className="text-white">Weather</h4>
             <div className="border-bottom"></div>
             <p className="text-white mt-2">City  {city}</p>
-            <p className="text-white mt-2">Humidity  {humidity}%</p>
-            <p className="text-white mt-2">Wind {wind} m/s</p>
+            <p className="text-white">Humidity  {humidity}%</p>
+            <p className="text-white">Wind {wind} m/s</p>
           </div>
         </div>
       </div>
