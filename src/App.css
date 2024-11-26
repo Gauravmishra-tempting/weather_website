@@ -38,3 +38,18 @@
 }
 
 
+/* 
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+  .bg-dark {
+    padding: 15px;
+  }
+  .text-center {
+    font-size: 1.2rem;
+  }
+} */
+
+
+
