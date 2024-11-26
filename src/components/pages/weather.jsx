@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import clear from '../../images/sunny.jpg'
 import Rain from '../../images/Rain.jpg'
 import snow from '../../images/winter.jpg';
+import clearNight from '../../images/clearNight.jpg';
+import cloudyNight from '../../images/cloudyNight.jpg';
 
 const Weather = () => {
   const api_key = process.env.REACT_APP_APIKEY;
@@ -57,15 +59,24 @@ const Weather = () => {
       setHumidity(firstForecast.main.humidity); // Humidity
       setWind(firstForecast.wind.speed); // Wind speed
       const condition = firstForecast.weather[0].main;
-      if(condition==="clear"){
-        setBackgroundConditon(clear);
-      }else if (condition==="Rain" || condition==="Drizzle"){
+      const icon = firstForecast.weather[0].icon; 
+      const isNight = icon.includes('n'); 
+
+      if(condition === "clear"){
+        setBackgroundConditon(isNight ? clearNight : clear);
+      }else if (condition === "Clouds") {
+          setBackgroundConditon( cloudyNight);
+      }else if (condition === "Rain" || condition === "Drizzle"){
         setBackgroundConditon(Rain);
       }
-      else if (condition==="Snow"){
+      else if (condition === "Snow"){
         setBackgroundConditon(snow);
+      } else {
+        setBackgroundConditon(clear);
       }
-      
+     
+
+
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
       const dailyForecast = [];
@@ -127,7 +138,7 @@ const Weather = () => {
             <div className="border-bottom"></div>
             <p className="text-white mt-2">City  {city}</p>
             <p className="text-white">Humidity  {humidity}%</p>
-            <p className="text-white">Wind {wind} m/s</p>
+            <p className="text-white">Wind {wind} km/h</p>
           </div>
         </div>
       </div>
