@@ -15,7 +15,6 @@ const Weather = () => {
   const [backgroundConditon, setBackgroundConditon] = useState(clear);
 
 
-
   // Get user's location
   useEffect(() => {
     if (navigator.geolocation) {
@@ -61,18 +60,19 @@ const Weather = () => {
       const condition = firstForecast.weather[0].main;
       const icon = firstForecast.weather[0].icon; 
       const isNight = icon.includes('n'); 
+      
 
       if(condition === "clear"){
         setBackgroundConditon(isNight ? clearNight : clear);
       }else if (condition === "Clouds") {
-          setBackgroundConditon( cloudyNight);
+          setBackgroundConditon(isNight ? cloudyNight : clear);
       }else if (condition === "Rain" || condition === "Drizzle"){
         setBackgroundConditon(Rain);
       }
       else if (condition === "Snow"){
         setBackgroundConditon(snow);
       } else {
-        setBackgroundConditon(clear);
+        setBackgroundConditon(isNight ? clearNight : clear);
       }
      
 
