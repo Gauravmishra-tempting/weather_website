@@ -61,13 +61,9 @@ const Weather = () => {
       setWind(firstForecast.wind.speed); // Wind speed
       const condition = firstForecast.weather[0].main;
       const icon = firstForecast.weather[0].icon; 
-      const isNight = icon.includes('n'); 
+      const isNight = icon.includes('n') || currentHour >= 18 || currentHour <= 6; 
       
-      if (currentHour === 6) {
-        setBackgroundConditon(clear);
-      }else if (currentHour === 18) {
-        setBackgroundConditon(clearNight);
-      }else if(condition === "clear"){
+      if(condition === "clear"){
         setBackgroundConditon(isNight ? clearNight : clear);
       }else if (condition === "Clouds") {
           setBackgroundConditon(isNight ? cloudyNight : clear);
@@ -77,11 +73,9 @@ const Weather = () => {
       else if (condition === "Snow"){
         setBackgroundConditon(snow);
       } else {
-        setBackgroundConditon(clear);
+        setBackgroundConditon(isNight ? clearNight : clear);
       }
      
-
-     console.log(currentHour);
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
       const dailyForecast = [];
