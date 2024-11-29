@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import clear from '../../images/sunny.jpg'
-import Rain from '../../images/Rain.jpg'
-import snow from '../../images/winter.jpg';
-import clearNight from '../../images/clearNight.jpg';
-import cloudyNight from '../../images/cloudyNight.jpg';
+import clear from '../../assets/img/sunny.jpg'
+import Rain from '../../assets/img/Rain.jpg'
+import snow from '../../assets/img/winter.jpg';
+import clearNight from '../../assets/img/clearNight.jpg';
+import cloudyNight from '../../assets/img/cloudyNight.jpg';
 
 const Weather = () => {
   const api_key = process.env.REACT_APP_APIKEY;
@@ -13,7 +13,9 @@ const Weather = () => {
   const [humidity, setHumidity] = useState(null);
   const [wind, setWind] = useState(null);
   const [backgroundConditon, setBackgroundConditon] = useState(clear);
+  
 
+  const currentHour = new Date().getHours();
 
   // Get user's location
   useEffect(() => {
@@ -61,8 +63,11 @@ const Weather = () => {
       const icon = firstForecast.weather[0].icon; 
       const isNight = icon.includes('n'); 
       
-
-      if(condition === "clear"){
+      if (currentHour === 6) {
+        setBackgroundConditon(clear);
+      }else if (currentHour === 18) {
+        setBackgroundConditon(clearNight);
+      }else if(condition === "clear"){
         setBackgroundConditon(isNight ? clearNight : clear);
       }else if (condition === "Clouds") {
           setBackgroundConditon(isNight ? cloudyNight : clear);
@@ -72,11 +77,11 @@ const Weather = () => {
       else if (condition === "Snow"){
         setBackgroundConditon(snow);
       } else {
-        setBackgroundConditon(isNight ? clearNight : clear);
+        setBackgroundConditon(clear);
       }
      
 
-
+     console.log(currentHour);
 
       // Extracting a 4-day forecast (example logic, adjust as needed)
       const dailyForecast = [];
