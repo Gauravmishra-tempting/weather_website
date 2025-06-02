@@ -51,5 +51,18 @@
   }
 } */
 
+  @media only screen and (max-width: 991px) {
+     .response {
+      padding: '0px',
+     }
+  }
 
+  .responsive-padding {
+  padding: 120;
+}
 
+@media (min-width: 768px) {
+  .responsive-padding {
+    padding: 0px;
+  }
+}

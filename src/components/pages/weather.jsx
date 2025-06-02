@@ -13,6 +13,7 @@ const Weather = () => {
   const [humidity, setHumidity] = useState(null);
   const [wind, setWind] = useState(null);
   const [backgroundConditon, setBackgroundConditon] = useState(clear);
+  const isMobile = window.innerWidth <= 576;
   
 
   const currentHour = new Date().getHours();
@@ -106,13 +107,15 @@ const Weather = () => {
   className="d-flex justify-content-center align-items-center"
   style={{ minHeight: '100vh' }} // Full screen height
 >
-    <div className='container rounded'
+    <div className='rounded'
       style = {{
-        backgroundColor: '#3A6D8C',
-        backgroundImage: `url(${backgroundConditon})`,       
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',           
-        color: 'white',
+         backgroundImage:  `url(${backgroundConditon})`,
+         backgroundSize: 'cover',
+         backgroundPosition: 'center',
+         backgroundRepeat: 'no-repeat',
+         minHeight: '100vh',
+         width: '100%',
+         padding: isMobile ? '100px 15px' : '120px',
       }}
       >
       <h1 className="text-center text-white mt-5">Weather Website</h1>
