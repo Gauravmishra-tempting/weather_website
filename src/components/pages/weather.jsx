@@ -102,24 +102,28 @@ const Weather = () => {
   };
 
   return (
-    <div className='container mt-2 mb-2 rounded'
+<div
+  className="d-flex justify-content-center align-items-center"
+  style={{ minHeight: '100vh' }} // Full screen height
+>
+    <div className='container rounded'
       style = {{
         backgroundColor: '#3A6D8C',
-        backgroundImage: `url(${backgroundConditon})`,
+        backgroundImage: `url(${backgroundConditon})`,       
         backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        backgroundPosition: 'center',           
         color: 'white',
       }}
       >
-      <h1 className="text-center text-white mt-1">Weather Website</h1>
+      <h1 className="text-center text-white mt-5">Weather Website</h1>
         <div className="d-flex justify-content-center align-items-center">
           <div className="col-sm-6 col-md-6 rounded mt-3 bg-dark bg-gradient p-3 mb-3">
             <h4 className="text-white">4-Days Forecast</h4>
-            <div className="border-bottom"></div>
+            <div className="border-bottom"></div>                   
             {forecast.map((item, index) => (
               <div key={index} className="text-white mt-3">
                 <p style={{ color: 'white' }}>
-                  {item.day} 
+                  {item.day}                             
                 <img
                   src={item.icon}
                   alt="Weather Icon"
@@ -140,6 +144,7 @@ const Weather = () => {
             <p className="text-white">Wind {wind} km/h</p>
           </div>
         </div>
+      </div>
       </div>
   );
 };
